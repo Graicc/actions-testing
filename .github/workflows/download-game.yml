@@ -20,7 +20,7 @@ jobs:
           steam_password: ${{secrets.STEAM_PASSWORD}}
         run: |
           steamcmd\steamcmd +quit
-          steamcmd\steamcmd +login anonymous +force_install_dir ..\gorillatag +app_update 1533390 +quit
+          steamcmd\steamcmd +login $env:steam_username $env:steam_password +force_install_dir ..\gorillatag +app_update 1533390 +quit
       - name: List
         shell: pwsh
         run: |
@@ -32,4 +32,12 @@ jobs:
         with:
           webhook-url: ${{secrets.DISCORD_WEBHOOK_URL}}
           filename: "gorillatag/Gorilla Tag_Data/Managed/Assembly-CSharp.dll"
+      - name: Failure
+        if: ${{ failure() }}
+        uses: tsickert/discord-webhook@v3.2.0
+        with:
+          webhook-url: ${{secrets.DISCORD_WEBHOOK_URL}}
+          filename: "steamcmd/logs/stderr.txt"
+
+      
 
