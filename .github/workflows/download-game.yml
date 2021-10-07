@@ -1,1 +1,30 @@
 name: Download Game
+on: 
+  workflow_dispatch:
+  push:
+
+jobs:
+  download:
+    name: download
+    runs-on: windows-latest
+    steps:
+      - name: Download SteamCMD
+        shell: pwsh
+        run: |
+          Invoke-WebRequest -Uri https://steamcdn-a.akamaihd.net/client/installer/steamcmd.zip -OutFile steamcmd.zip
+          Expand-Archive steamcmd.zip
+      - name: Download Gorilla Tag
+        shell: pwsh
+        run: steamcmd\steamcmd +login ${{secrets.STEAM_USERNAME}} ${{secrets.STEAM_PASSWORD}} +force_install_dir ..\gorillatag +app_update 1533390 +quit
+      - name: List
+        shell: pwsh
+        run: |
+          ls
+          ls gorillatag
+          ls '.\gorillatag\Gorilla Tag_Data\'
+      - name: Upload files
+        uses: tsickert/discord-webhook@v3.2.0
+        with:
+          webhook-url: ${{secrets.DISCORD_WEBHOOK_URL}}
+          filename: ".\gorillatag\Gorilla Tag_Data\Managed\Assembly-CSharp.dll"
+
