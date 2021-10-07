@@ -34,10 +34,7 @@ jobs:
           filename: "gorillatag/Gorilla Tag_Data/Managed/Assembly-CSharp.dll"
       - name: Failure
         if: ${{ failure() }}
-        uses: tsickert/discord-webhook@v3.2.0
-        with:
-          webhook-url: ${{secrets.DISCORD_WEBHOOK_URL}}
-          filename: "steamcmd/logs/stderr.txt"
-
+        shell: pwsh
+        run: cat 'steamcmd\logs\stderr.txt'
       
 
