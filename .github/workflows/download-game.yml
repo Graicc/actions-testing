@@ -15,7 +15,10 @@ jobs:
           Expand-Archive steamcmd.zip
       - name: Download Gorilla Tag
         shell: pwsh
-        run: steamcmd\steamcmd +login ${{secrets.STEAM_USERNAME}} ${{secrets.STEAM_PASSWORD}} +force_install_dir ..\gorillatag +app_update 1533390 +quit
+        run: |
+          steamcmd\steamcmd +quit
+          steamcmd\steamcmd +login ${{secrets.STEAM_USERNAME}} ${{secrets.STEAM_PASSWORD}} +quit
+          steamcmd\steamcmd +login ${{secrets.STEAM_USERNAME}} ${{secrets.STEAM_PASSWORD}} +force_install_dir ..\gorillatag +app_update 1533390 +quit
       - name: List
         shell: pwsh
         run: |
