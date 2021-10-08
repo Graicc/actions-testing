@@ -6,35 +6,21 @@ on:
 jobs:
   download:
     name: download
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     steps:
-      - name: Download SteamCMD
-        shell: pwsh
-        run: |
-          Invoke-WebRequest -Uri https://steamcdn-a.akamaihd.net/client/installer/steamcmd.zip -OutFile steamcmd.zip
-          Expand-Archive steamcmd.zip
+      - name: Setup SteamCMD
+        uses: CyberAndrii/setup-steamcmd@v1.1.1
       - name: Download Gorilla Tag
-        shell: pwsh
-        env:
-          steam_username: ${{secrets.STEAM_USERNAME}}
-          steam_password: ${{secrets.STEAM_PASSWORD}}
         run: |
-          steamcmd\steamcmd +quit
-          steamcmd\steamcmd +login $steam_username $steam_password +force_install_dir ..\gorillatag +app_update 1533390 +quit
+          steamcmd +@sSteamCmdForcePlatformType windows +login ${{secrets.STEAM_USERNAME}} ${{secrets.STEAM_PASSWORD}} +force_install_dir ~/gorillatag +app_update 1533390 +quit
       - name: List
-        shell: pwsh
         run: |
           ls
-          ls gorillatag
-          ls '.\gorillatag\Gorilla Tag_Data\'
+          ls -l ~/gorillatag
       - name: Upload files
         uses: tsickert/discord-webhook@v3.2.0
         with:
           webhook-url: ${{secrets.DISCORD_WEBHOOK_URL}}
-          filename: "gorillatag/Gorilla Tag_Data/Managed/Assembly-CSharp.dll"
-      - name: Failure
-        if: ${{ failure() }}
-        shell: pwsh
-        run: cat 'steamcmd\logs\stderr.txt'
+          filename: "~/gorillatag/Gorilla Tag_Data/Managed/Assembly-CSharp.dll"
       
 
