@@ -8,10 +8,12 @@ jobs:
     name: download
     runs-on: windows-latest
     steps:
+      - run: pwd
       - name: Setup SteamCMD
         uses: CyberAndrii/setup-steamcmd@v1.1.1
       - name: Download Gorilla Tag
         run: |
+          pwd
           steamcmd +@sSteamCmdForcePlatformType windows +login ${{secrets.STEAM_USERNAME}} ${{secrets.STEAM_PASSWORD}} +force_install_dir gorillatag +app_update 1533390 +quit
       - name: List
         run: |
