@@ -22,5 +22,28 @@ jobs:
         with:
           webhook-url: ${{secrets.DISCORD_WEBHOOK_URL}}
           filename: "~/gorillatag/Gorilla Tag_Data/Managed/Assembly-CSharp.dll"
-      
+      - name: Cache game
+        uses: actions/cache@v2
+        with:
+          path: ~/gorillatag
+          key: gorillatag-${{ github.sha }}
+
+  redownload:
+    name: download
+    runs-on: windows-latest
+    needs: download
+    steps:
+      - name: List
+        run: |
+          ls
+          ls -l ~/gorillatag
+      - name: Cache game
+        uses: actions/cache@v2
+        with:
+          path: ~/gorillatag
+          key: gorillatag-${{ github.sha }}
+      - name: List
+        run: |
+          ls
+          ls -l ~/gorillatag
 
