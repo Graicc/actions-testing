@@ -17,11 +17,6 @@ jobs:
         run: |
           ls
           ls -l ~/gorillatag
-      - name: Upload files
-        uses: tsickert/discord-webhook@v3.2.0
-        with:
-          webhook-url: ${{secrets.DISCORD_WEBHOOK_URL}}
-          filename: "~/gorillatag/Gorilla Tag_Data/Managed/Assembly-CSharp.dll"
       - name: Cache game
         uses: actions/cache@v2
         with:
