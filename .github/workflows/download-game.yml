@@ -16,7 +16,7 @@ jobs:
           steamcmd +@sSteamCmdForcePlatformType windows +login ${{secrets.STEAM_USERNAME}} ${{secrets.STEAM_PASSWORD}} +force_install_dir ~/gorillatag +app_update 1533390 +quit
       - name: List
         run: |
-          ls
+          ls -l ~
           ls -l ~/gorillatag
       - name: Cache game
         uses: actions/cache@v2
