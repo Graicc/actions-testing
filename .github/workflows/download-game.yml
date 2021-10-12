@@ -28,10 +28,6 @@ jobs:
     runs-on: windows-latest
     needs: download
     steps:
-      - name: List
-        run: |
-          ls
-          ls -l ~/gorillatag
       - name: Cache game
         uses: actions/cache@v2
         with:
