@@ -25,7 +25,7 @@ jobs:
           key: gorillatag-${{ github.sha }}
 
   redownload:
-    name: download
+    name: redownload
     runs-on: windows-latest
     needs: download
     steps:
