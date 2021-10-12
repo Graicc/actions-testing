@@ -37,5 +37,5 @@ jobs:
       - name: List
         run: |
           ls
-          ls -l .\gorillatag
+          ls -l ~/gorillatag
 
