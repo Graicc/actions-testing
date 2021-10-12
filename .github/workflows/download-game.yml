@@ -13,15 +13,15 @@ jobs:
         uses: CyberAndrii/setup-steamcmd@v1.1.1
       - name: Download Gorilla Tag
         run: |
-          steamcmd +@sSteamCmdForcePlatformType windows +login ${{secrets.STEAM_USERNAME}} ${{secrets.STEAM_PASSWORD}} +force_install_dir ~/gorillatag +app_update 1533390 +quit
+          steamcmd +@sSteamCmdForcePlatformType windows +login ${{secrets.STEAM_USERNAME}} ${{secrets.STEAM_PASSWORD}} +force_install_dir $pwd/gorillatag +app_update 1533390 +quit
       - name: List
         run: |
-          ls -l ~
-          ls -l ~/gorillatag
+          ls -l 
+          ls -l $pwd/gorillatag
       - name: Cache game
         uses: actions/cache@v2
         with:
-          path: ~/gorillatag
+          path: $pwd/gorillatag
           key: gorillatag-${{ github.sha }}
 
   redownload:
@@ -32,10 +32,10 @@ jobs:
       - name: Cache game
         uses: actions/cache@v2
         with:
-          path: ~/gorillatag
+          path: $pwd/gorillatag
           key: gorillatag-${{ github.sha }}
       - name: List
         run: |
           ls
-          ls -l ~/gorillatag
+          ls -l $pwd/gorillatag
 
