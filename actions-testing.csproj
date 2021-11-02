@@ -285,4 +285,8 @@
       <HintPath>$(GameAssemblyPath)\websocket-sharp.dll</HintPath>
     </Reference>
   </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="CopyToPlugins" Condition="'$(Configuration)' == 'CI'">
+    <ZipDirectory SourceDirectory=".\Build" DestinationFile=".\Build.zip" />
+  </Target>
 </Project>

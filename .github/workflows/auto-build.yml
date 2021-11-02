@@ -1,0 +1,44 @@
+name: Download Game
+on: 
+  workflow_dispatch:
+  push:
+
+jobs:
+  build:
+    steps:
+    - uses: actions/checkout@v1
+    - name: Download Stripped Libs
+      uses: robinraju/release-downloader@v1.2
+      with:
+        repository: "Graicc/GorillaStripper"
+        latest: true
+        fileName: "Stripped.zip"
+    - name: Extract Stripped Libs
+      run: Expand-Archive .\Stripped.zip Libs
+    - name: Download BepInEx
+      uses: robinraju/release-downloader@v1.2
+      with:
+        repository: "BepInEx/BepInEx"
+        latest: true
+        fileName: "*"
+    - name: Extract BepInEx
+      run: |
+        Expand-Archive BepInEx_x64*.zip Temp
+        cp Temp\BepInEx\core\*.dll Libs
+
+    - name: Setup MSBuild
+      uses: warrenbuckley/Setup-MSBuild@v1
+      env:
+        ACTIONS_ALLOW_UNSECURE_COMMANDS: true
+    - name: Install dependencies
+      run: msbuild -t:restore
+    - name: Build project
+      run: msbuild . /t:Build /p:Configuration=CI
+
+    - name: Upload Built Mod
+      uses: actions/upload-artifact@v1
+      with:
+        name: Build
+        path: Build.zip
+
+
