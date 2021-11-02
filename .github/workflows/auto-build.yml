@@ -2,14 +2,14 @@ name: Auto Build
 on: 
   workflow_dispatch:
   push:
-    branches: main
+    branches: [master,main]
     paths-ignore:
-      - '**.yml'
+      # - '**.yml'
       - '!.github/workflows/auto-build.yml'
       - '**.md'
       - '.gitignore'
   pull_request:
-    branches: main
+    branches: [master,main]
 
 
 jobs:
