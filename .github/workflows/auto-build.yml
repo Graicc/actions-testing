@@ -62,7 +62,7 @@ jobs:
       with:
         webhook-url: ${{ secrets.WEBHOOK_URL }}
         content: |-
-          **${{github.actor}** on **${{github.repository}}**(${{github.ref}}): *${{ github.event.head_commit.message }}*
+          **${{github.actor}}** on **${{github.repository}}**(${{github.ref}}): *${{ github.event.head_commit.message }}*
           <https://github.com/${{github.repository}}/commit/${{github.sha}}>
         filename: Build.zip
 
