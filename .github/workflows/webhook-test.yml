@@ -18,7 +18,7 @@ jobs:
           else
             echo "::set-output name=same::false"
           fi
-      - if: ${{ steps.compare.outputs.same == "true" }}
+      - if: ${{ steps.compare.outputs.same == true }}
         run: echo "the same"
-      - if: ${{ steps.compare.outputs.same == "false" }}
+      - if: ${{ steps.compare.outputs.same == false }}
         run: echo "different"
