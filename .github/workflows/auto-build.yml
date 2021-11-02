@@ -2,12 +2,12 @@ name: Auto Build
 on: 
   workflow_dispatch:
   push:
-    # branches: [master,main]
-    # paths-ignore:
-      # - '**.yml'
-      # - '!.github/workflows/auto-build.yml'
-      # - '**.md'
-      # - '.gitignore'
+    branches: [master,main]
+    paths-ignore:
+      - '**.yml'
+      - '!.github/workflows/auto-build.yml'
+      - '**.md'
+      - '.gitignore'
   pull_request:
     branches: [master,main]
 
@@ -47,13 +47,17 @@ jobs:
       run: msbuild . /t:Build /p:Configuration=CI
 
     - name: Upload Mod to GitHub
-      if: ${{ secrets.WEBHOOK_URL == "" }}
+      env:
+        WEBHOOK_URL: ${{ secrets.WEBHOOK_URL }}
+      if: "${{ env.WEBHOOK_URL == '' }}"
       uses: actions/upload-artifact@v1
       with:
         name: Build
         path: Build
     - name: Upload Mod to Discord
-      if: ${{ secrets.WEBHOOK_URL != "" }}
+      env:
+        WEBHOOK_URL: ${{ secrets.WEBHOOK_URL }}
+      if: "${{ env.WEBHOOK_URL != '' }}"
       uses: tsickert/discord-webhook@v4.0.0
       with:
         webhook-url: ${{ secrets.WEBHOOK_URL }}
