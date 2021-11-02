@@ -22,7 +22,7 @@ jobs:
           fi
       - run: echo ${{ steps.compare.outputs }}
       - run: echo ${{ steps.compare.outputs.same }}
-      - if: ${{ steps.compare.outputs.same == true }}
+      - if: ${{ steps.compare.outputs.same }}
         run: echo "the same"
-      - if: ${{ steps.compare.outputs.same == false }}
+      - if: ${{ steps.compare.outputs.same }}
         run: echo "different"
