@@ -286,7 +286,7 @@
     </Reference>
   </ItemGroup>
 
-  <Target Name="PostBuild" AfterTargets="CopyToPlugins" Condition="'$(Configuration)' == 'CI' || '$(Configuration' == 'Release'">
+  <Target Name="PostBuild" AfterTargets="CopyToPlugins" Condition="'$(Configuration)' == 'CI' or '$(Configuration' == 'Release'">
     <ZipDirectory SourceDirectory=".\Build" DestinationFile=".\Build.zip" />
   </Target>
 </Project>
