@@ -58,10 +58,6 @@ jobs:
       env:
         WEBHOOK_URL: ${{ secrets.WEBHOOK_URL }}
       if: "${{ env.WEBHOOK_URL != '' }}"
-        content: |-
-          **${{github.actor}}** on **${{github.repository}}**(${{github.ref}}): *${{ github.event.head_commit.message }}*
-          <https://github.com/${{github.repository}}/commit/${{github.sha}}>
-        filename: Build.zip
       shell: bash
       run: |
         curl https://raw.githubusercontent.com/ChaoticWeg/discord.sh/master/discord.sh -o discord.sh
