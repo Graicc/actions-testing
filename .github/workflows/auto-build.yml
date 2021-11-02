@@ -2,6 +2,15 @@ name: Auto Build
 on: 
   workflow_dispatch:
   push:
+    branches: master
+    paths-ignore:
+      - '**.yml'
+      - '!.github/workflows/auto-build.yml'
+      - '**.md'
+      - '.gitignore'
+  pull_request:
+    branches: master
+
 
 jobs:
   build:
@@ -12,7 +21,7 @@ jobs:
     - name: Download Stripped Libs
       uses: robinraju/release-downloader@v1.2
       with:
-        repository: "Graicc/GorillaStripper"
+        repository: "Graicc/GorillaStripper" # TODO: Update to GTMG repo
         latest: true
         fileName: "Stripped.zip"
     - name: Extract Stripped Libs
@@ -37,10 +46,20 @@ jobs:
     - name: Build project
       run: msbuild . /t:Build /p:Configuration=CI
 
-    - name: Upload Built Mod
+    - name: Upload Mod to GitHub
+      if: ${{ secrets.WEBHOOK_URL == "" }}
       uses: actions/upload-artifact@v1
       with:
         name: Build
         path: Build
+    - name: Upload Mod to Discord
+      if: ${{ secrets.WEBHOOK_URL != "" }}
+      uses: tsickert/discord-webhook@v4.0.0
+      with:
+        webhook-url: ${{ secrets.WEBHOOK_URL }}
+        content: |-
+          **${{github.actor}** on **${{github.repository}}**(${{github.ref}}): *${{ github.event.head_commit.message }}*
+          <https://github.com/${{github.repository}}/commit/${{github.sha}}>
+        filename: Build.zip
 
 
