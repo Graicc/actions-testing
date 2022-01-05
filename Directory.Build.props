@@ -6,13 +6,9 @@
 		<BepInExAssemblyPath>$(GamePath)\BepInEx\core</BepInExAssemblyPath>
 		<PluginsPath>$(GamePath)\BepInEx\plugins</PluginsPath>
 	</PropertyGroup>
-	<PropertyGroup Condition="'$(Configuration)' == 'Release'">
-		<PluginsPath>.\Build\BepInEx\plugins</PluginsPath>
-	</PropertyGroup>
-	<PropertyGroup Condition="'$(Configuration)' == 'CI'">
+	<PropertyGroup Condition="'$(CI)'=='TRUE'">
 		<GameAssemblyPath>.\Libs</GameAssemblyPath>
 		<BepInExAssemblyPath>.\Libs</BepInExAssemblyPath>
-		<PluginsPath>.\Build\BepInEx\plugins</PluginsPath>
-		<ConfigurationGroup>Release</ConfigurationGroup>
+		<PluginsPath>.\Libs</PluginsPath>
 	</PropertyGroup>
 </Project>

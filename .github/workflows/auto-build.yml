@@ -39,16 +39,30 @@ jobs:
       run: |
         Expand-Archive BepInEx_x64*.zip Temp
         cp Temp\BepInEx\core\*.dll Libs
+        rm Temp -Recurse
+    - name: Download Utilla
+      uses: robinraju/release-downloader@v1.2
+      with:
+        repository: "legoandmars/Utilla"
+        latest: true
+        fileName: "*"
+    - name: Extract Utilla
+      run: |
+        Expand-Archive Utilla*.zip Temp
+        cp Temp\BepInEx\plugins\Utilla Libs
+        rm Temp -Recurse
 
     # Build the mod
-    - name: Setup MSBuild
-      uses: warrenbuckley/Setup-MSBuild@v1
-      env:
-        ACTIONS_ALLOW_UNSECURE_COMMANDS: true
-    - name: Install dependencies
-      run: msbuild -t:restore
+    - name: Setup dotnet
+      uses: actions/setup-dotnet@v1
     - name: Build project
-      run: msbuild . /t:Build /p:Configuration=CI
+      env: 
+        CI: TRUE
+      run: .\MakeRelease.ps1
+    - name: Prepare build for upload
+      run: |
+        mv (-join((ls *.csproj).BaseName, '-v.zip')) Build.zip
+        Expand-Archive Build.zip Build
 
     # Upload the mod
     - name: Upload to GitHub
