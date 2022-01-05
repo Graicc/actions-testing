@@ -19,6 +19,9 @@ jobs:
     steps:
     # Setup
     - uses: actions/checkout@v1
+    - name: Get working directory
+      id: wd
+      run: echo "::set-output name=dir::$((ls . -filter *.csproj -recurse).DirectoryName)"
 
     # Download required libraries
     - name: Download Stripped Libs
@@ -30,7 +33,7 @@ jobs:
         fileName: "Stripped.zip"
     - name: Extract Stripped Libs
       working-directory: actions-testing
-      run: Expand-Archive .\Stripped.zip Libs
+      run: Expand-Archive .\Stripped.zip ${{steps.wd.outputs.dir}}\Libs
     - name: Download BepInEx
       working-directory: actions-testing
       uses: robinraju/release-downloader@v1.2
@@ -42,7 +45,7 @@ jobs:
       working-directory: actions-testing
       run: |
         Expand-Archive BepInEx_x64*.zip Temp
-        cp Temp\BepInEx\core\*.dll Libs
+        cp Temp\BepInEx\core\*.dll ${{steps.wd.outputs.dir}}\Libs
         rm Temp -Recurse
     - name: Download Utilla
       working-directory: actions-testing
@@ -55,7 +58,7 @@ jobs:
       working-directory: actions-testing
       run: |
         Expand-Archive Utilla*.zip Temp
-        cp Temp\BepInEx\plugins\Utilla Libs -Recurse
+        cp Temp\BepInEx\plugins\Utilla ${{steps.wd.outputs.dir}}\Libs -Recurse
         rm Temp -Recurse
 
     # Build the mod
@@ -66,12 +69,12 @@ jobs:
       working-directory: actions-testing
       env: 
         CI: TRUE
-      run: .\MakeRelease.ps1
+      run: ${{steps.wd.outputs.dir}}\MakeRelease.ps1
     - name: Prepare build for upload
       working-directory: actions-testing
       run: |
         mv (-join((ls *.csproj).BaseName, '-v.zip')) Build.zip
-        Expand-Archive Build.zip Build
+        Expand-Archive ${{steps.wd.outputs.dir}}\Build.zip ${{steps.wd.outputs.dir}}\Build
 
     # Upload the mod
     - name: Upload to GitHub
@@ -82,7 +85,7 @@ jobs:
       uses: actions/upload-artifact@v1
       with:
         name: Build
-        path: Build
+        path: ${{steps.wd.outputs.dir}}\Build
     - name: Upload to Discord
       working-directory: actions-testing
       env:
@@ -94,6 +97,6 @@ jobs:
         ./discord.sh \
         --webhook-url="${{ secrets.WEBHOOK_URL }}" \
         --text '**${{github.actor}}** on **${{github.repository}}**(${{github.ref}}): *${{ github.event.head_commit.message }}*\n<https://github.com/${{github.repository}}/commit/${{github.sha}}>' \
-        --file Build.zip
+        --file ${{steps.wd.outputs.dir}}\Build.zip
         
 
