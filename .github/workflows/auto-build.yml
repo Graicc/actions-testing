@@ -49,7 +49,7 @@ jobs:
     - name: Extract Utilla
       run: |
         Expand-Archive Utilla*.zip Temp
-        cp Temp\BepInEx\plugins\Utilla Libs
+        cp Temp\BepInEx\plugins\Utilla Libs -Recurse
         rm Temp -Recurse
 
     # Build the mod
