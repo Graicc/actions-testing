@@ -24,7 +24,7 @@ jobs:
     - name: Download Stripped Libs
       uses: robinraju/release-downloader@v1.2
       with:
-        repository: "Graicc/GorillaStripper" # TODO: Update to GTMG repo
+        repository: "Gorilla-Tag-Modding-Group/BeatStripper"
         latest: true
         fileName: "Stripped.zip"
     - name: Extract Stripped Libs

@@ -29,7 +29,7 @@ namespace actions_testing
 		{
 			if (instance != null && IsPatched)
 			{
-				instance.UnpatchAll(InstanceId);
+				instance.UnpatchSelf();
 				IsPatched = false;
 			}
 		}

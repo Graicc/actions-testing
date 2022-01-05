@@ -3,7 +3,7 @@ using BepInEx;
 using UnityEngine;
 using Utilla;
 
-namespace GorillaTagModTemplateProject
+namespace actions_testing
 {
 	[ModdedGamemode]
 	[BepInDependency("org.legoandmars.gorillatag.utilla", "1.5.0")]
