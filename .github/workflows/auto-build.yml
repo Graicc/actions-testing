@@ -64,7 +64,7 @@ jobs:
       run: ${{steps.wd.outputs.dir}}\MakeRelease.ps1
     - name: Prepare build for upload
       run: |
-        mv (-join((ls *.csproj).BaseName, '-v.zip')) Build.zip
+        mv (-join((ls . -filter *.csproj -recurse).BaseName, '-v.zip')) Build.zip
         Expand-Archive ${{steps.wd.outputs.dir}}\Build.zip ${{steps.wd.outputs.dir}}\Build
 
     # Upload the mod
