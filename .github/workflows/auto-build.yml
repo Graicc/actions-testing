@@ -64,8 +64,9 @@ jobs:
       run: ${{steps.wd.outputs.dir}}\MakeRelease.ps1
     - name: Prepare build for upload
       run: |
-        mv (-join((ls . -filter *.csproj -recurse).BaseName, '-v.zip')) Build.zip
-        Expand-Archive ${{steps.wd.outputs.dir}}\Build.zip ${{steps.wd.outputs.dir}}\Build
+        $dir = (ls . -filter *.csproj -recurse).BaseName
+        mv $dir\$dir-v.zip Build.zip
+        Expand-Archive Build.zip Build
 
     # Upload the mod
     - name: Upload to GitHub
@@ -75,7 +76,7 @@ jobs:
       uses: actions/upload-artifact@v1
       with:
         name: Build
-        path: ${{steps.wd.outputs.dir}}\Build
+        path: Build
     - name: Upload to Discord
       env:
         WEBHOOK_URL: ${{ secrets.WEBHOOK_URL }}
@@ -86,6 +87,6 @@ jobs:
         ./discord.sh \
         --webhook-url="${{ secrets.WEBHOOK_URL }}" \
         --text '**${{github.actor}}** on **${{github.repository}}**(${{github.ref}}): *${{ github.event.head_commit.message }}*\n<https://github.com/${{github.repository}}/commit/${{github.sha}}>' \
-        --file ${{steps.wd.outputs.dir}}\Build.zip
+        --file Build.zip
         
 
