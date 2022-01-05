@@ -25,37 +25,31 @@ jobs:
 
     # Download required libraries
     - name: Download Stripped Libs
-      working-directory: actions-testing
       uses: robinraju/release-downloader@v1.2
       with:
         repository: "Gorilla-Tag-Modding-Group/BeatStripper"
         latest: true
         fileName: "Stripped.zip"
     - name: Extract Stripped Libs
-      working-directory: actions-testing
       run: Expand-Archive .\Stripped.zip ${{steps.wd.outputs.dir}}\Libs
     - name: Download BepInEx
-      working-directory: actions-testing
       uses: robinraju/release-downloader@v1.2
       with:
         repository: "BepInEx/BepInEx"
         latest: true
         fileName: "*"
     - name: Extract BepInEx
-      working-directory: actions-testing
       run: |
         Expand-Archive BepInEx_x64*.zip Temp
         cp Temp\BepInEx\core\*.dll ${{steps.wd.outputs.dir}}\Libs
         rm Temp -Recurse
     - name: Download Utilla
-      working-directory: actions-testing
       uses: robinraju/release-downloader@v1.2
       with:
         repository: "legoandmars/Utilla"
         latest: true
         fileName: "*"
     - name: Extract Utilla
-      working-directory: actions-testing
       run: |
         Expand-Archive Utilla*.zip Temp
         cp Temp\BepInEx\plugins\Utilla ${{steps.wd.outputs.dir}}\Libs -Recurse
@@ -63,22 +57,18 @@ jobs:
 
     # Build the mod
     - name: Setup dotnet
-      working-directory: actions-testing
       uses: actions/setup-dotnet@v1
     - name: Build project
-      working-directory: actions-testing
       env: 
         CI: TRUE
       run: ${{steps.wd.outputs.dir}}\MakeRelease.ps1
     - name: Prepare build for upload
-      working-directory: actions-testing
       run: |
         mv (-join((ls *.csproj).BaseName, '-v.zip')) Build.zip
         Expand-Archive ${{steps.wd.outputs.dir}}\Build.zip ${{steps.wd.outputs.dir}}\Build
 
     # Upload the mod
     - name: Upload to GitHub
-      working-directory: actions-testing
       env:
         WEBHOOK_URL: ${{ secrets.WEBHOOK_URL }}
       if: "${{ env.WEBHOOK_URL == '' }}" # If there is no webhook, upload to the action
@@ -87,7 +77,6 @@ jobs:
         name: Build
         path: ${{steps.wd.outputs.dir}}\Build
     - name: Upload to Discord
-      working-directory: actions-testing
       env:
         WEBHOOK_URL: ${{ secrets.WEBHOOK_URL }}
       if: "${{ env.WEBHOOK_URL != '' }}" # If a webhook is supplied, use it instead
