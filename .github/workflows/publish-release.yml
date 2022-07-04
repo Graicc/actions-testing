@@ -1,0 +1,19 @@
+name: Publish Release
+on:
+  release:
+    types: [published]
+
+jobs:
+  publish-release:
+    name: Publish Release
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Send Webhook
+        run: |
+          curl https://raw.githubusercontent.com/ChaoticWeg/discord.sh/master/discord.sh -o discord.sh
+          ./discord.sh \
+          --webhook-url="${{ secrets.WEBHOOK_URL }}" \
+          --username "${{ github.event.release.author.login }}" \
+          --avatar "${{ github.event.release.author.avatar_url }}" \
+          --text "$(jq -Rs . <.github/templates/release.md | cut -c 2- | rev | cut -c 2- | rev)" 
