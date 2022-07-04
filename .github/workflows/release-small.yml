@@ -1,0 +1,26 @@
+name: Make Release Small
+on: 
+  workflow_dispatch:
+    inputs:
+      tag:
+        required: true
+
+jobs:
+  release:    
+    name: Make Release
+    runs-on: windows-latest
+    steps:
+      # Build mod
+    - uses: actions/checkout@v3
+
+      # Make release
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+      with:
+        tag_name: ${{ inputs.tag }}
+        release_name: Release ${{ inputs.tag }}
+        body_path: .github/templates/release.md
+        draft: true
