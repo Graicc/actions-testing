@@ -13,7 +13,7 @@ jobs:
         run: |
           curl https://raw.githubusercontent.com/ChaoticWeg/discord.sh/master/discord.sh -o discord.sh
           ./discord.sh \
-          --webhook-url="${{ secrets.WEBHOOK_URL }}" \
+          --webhook-url="${{ secrets.PUBLISH_WEBHOOK_URL }}" \
           --username "${{ github.event.release.author.login }}" \
           --avatar "${{ github.event.release.author.avatar_url }}" \
           --text "$(jq -Rs . <.github/templates/release.md | cut -c 2- | rev | cut -c 2- | rev)" 
