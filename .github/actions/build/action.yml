@@ -6,36 +6,43 @@ runs:
   steps:
     # Setup
   - name: Get working directory
+    shell: pwsh
     id: wd
     run: echo "::set-output name=dir::$((ls . -filter *.csproj -recurse).DirectoryName)"
 
     # Download required libraries
   - name: Download Stripped Libs
+    shell: pwsh
     uses: robinraju/release-downloader@v1.2
     with:
       repository: "Gorilla-Tag-Modding-Group/BeatStripper"
       latest: true
       fileName: "Stripped.zip"
   - name: Extract Stripped Libs
+    shell: pwsh
     run: Expand-Archive .\Stripped.zip ${{steps.wd.outputs.dir}}\Libs
   - name: Download BepInEx
+    shell: pwsh
     uses: robinraju/release-downloader@v1.2
     with:
       repository: "BepInEx/BepInEx"
       latest: true
       fileName: "*"
   - name: Extract BepInEx
+    shell: pwsh
     run: |
       Expand-Archive BepInEx_x64*.zip Temp
       cp Temp\BepInEx\core\*.dll ${{steps.wd.outputs.dir}}\Libs
       rm Temp -Recurse
   - name: Download Utilla
+    shell: pwsh
     uses: robinraju/release-downloader@v1.2
     with:
       repository: "legoandmars/Utilla"
       latest: true
       fileName: "*"
   - name: Extract Utilla
+    shell: pwsh
     run: |
       Expand-Archive Utilla*.zip Temp
       cp Temp\BepInEx\plugins\Utilla ${{steps.wd.outputs.dir}}\Libs -Recurse
@@ -43,12 +50,15 @@ runs:
 
     # Build the mod
   - name: Setup dotnet
+    shell: pwsh
     uses: actions/setup-dotnet@v1
   - name: Build project
+    shell: pwsh
     env: 
       CI: TRUE
     run: ${{steps.wd.outputs.dir}}\MakeRelease.ps1
   - name: Prepare build for upload
+    shell: pwsh
     run: |
       $dir = (ls . -filter *.csproj -recurse).BaseName
       mv $dir\$dir-v.zip Build.zip
