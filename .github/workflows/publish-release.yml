@@ -16,10 +16,12 @@ jobs:
       - uses: actions/checkout@v3
       - name: Send Webhook
         run: |
+          name=$(curl ${{ github.event.sender.url }} | jq -r .name)
+
           curl https://raw.githubusercontent.com/ChaoticWeg/discord.sh/master/discord.sh -o discord.sh
           chmod +x ./discord.sh
           ./discord.sh \
           --webhook-url="${{ secrets.PUBLISH_WEBHOOK_URL }}" \
-          --username "${{ github.event.release.author.login }}" \
-          --avatar "${{ github.event.release.author.avatar_url }}" \
+          --username "$name" \
+          --avatar "${{ github.event.sender.avatar_url }}" \
           --text "$(jq -Rs . <.github/templates/release.md | cut -c 2- | rev | cut -c 2- | rev)" 
