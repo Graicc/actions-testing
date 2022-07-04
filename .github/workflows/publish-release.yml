@@ -12,6 +12,7 @@ jobs:
       - name: Send Webhook
         run: |
           curl https://raw.githubusercontent.com/ChaoticWeg/discord.sh/master/discord.sh -o discord.sh
+          chmod +x ./discord.sh
           ./discord.sh \
           --webhook-url="${{ secrets.PUBLISH_WEBHOOK_URL }}" \
           --username "${{ github.event.release.author.login }}" \
