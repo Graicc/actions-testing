@@ -13,62 +13,16 @@ on:
 
 
 jobs:
-  build:
-    name: build
+  auto-build:
+    name: Auto Build
     runs-on: windows-latest
     steps:
-    # Setup
-    - uses: actions/checkout@v1
-    - name: Get working directory
-      id: wd
-      run: echo "::set-output name=dir::$((ls . -filter *.csproj -recurse).DirectoryName)"
+      # Build mod
+    - uses: actions/checkout@v3
+    - name: Build Mod
+      uses: ./.github/actions/build
 
-    # Download required libraries
-    - name: Download Stripped Libs
-      uses: robinraju/release-downloader@v1.2
-      with:
-        repository: "Gorilla-Tag-Modding-Group/BeatStripper"
-        latest: true
-        fileName: "Stripped.zip"
-    - name: Extract Stripped Libs
-      run: Expand-Archive .\Stripped.zip ${{steps.wd.outputs.dir}}\Libs
-    - name: Download BepInEx
-      uses: robinraju/release-downloader@v1.2
-      with:
-        repository: "BepInEx/BepInEx"
-        latest: true
-        fileName: "*"
-    - name: Extract BepInEx
-      run: |
-        Expand-Archive BepInEx_x64*.zip Temp
-        cp Temp\BepInEx\core\*.dll ${{steps.wd.outputs.dir}}\Libs
-        rm Temp -Recurse
-    - name: Download Utilla
-      uses: robinraju/release-downloader@v1.2
-      with:
-        repository: "legoandmars/Utilla"
-        latest: true
-        fileName: "*"
-    - name: Extract Utilla
-      run: |
-        Expand-Archive Utilla*.zip Temp
-        cp Temp\BepInEx\plugins\Utilla ${{steps.wd.outputs.dir}}\Libs -Recurse
-        rm Temp -Recurse
-
-    # Build the mod
-    - name: Setup dotnet
-      uses: actions/setup-dotnet@v1
-    - name: Build project
-      env: 
-        CI: TRUE
-      run: ${{steps.wd.outputs.dir}}\MakeRelease.ps1
-    - name: Prepare build for upload
-      run: |
-        $dir = (ls . -filter *.csproj -recurse).BaseName
-        mv $dir\$dir-v.zip Build.zip
-        Expand-Archive Build.zip Build
-
-    # Upload the mod
+      # Upload the mod
     - name: Upload to GitHub
       env:
         WEBHOOK_URL: ${{ secrets.WEBHOOK_URL }}
@@ -89,4 +43,3 @@ jobs:
         --text '**${{github.actor}}** on **${{github.repository}}**(${{github.ref}}): *${{ github.event.head_commit.message }}*\n<https://github.com/${{github.repository}}/commit/${{github.sha}}>' \
         --file Build.zip
         
-
