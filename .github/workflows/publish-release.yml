@@ -8,12 +8,19 @@ jobs:
     name: Publish Release
     runs-on: ubuntu-latest
     steps:
-      - name: Print GitHub context
+      - name: Get Release Text
         env:
-          GITHUB_CONTEXT: ${{ toJson(github) }}
-        run: echo "$GITHUB_CONTEXT"
+          BODY: ${{ github.event.release.body }}
+        run: |
+          printenv BODY > message.md
+          sed -i 's/\r$//g' message.md
 
-      - uses: actions/checkout@v3
+      - name: Format release text
+        uses: Graicc/MarkdownDiscordConverter@master
+        with:
+          file: message.md
+          output: output.txt
+
       - name: Send Webhook
         run: |
           name=$(curl ${{ github.event.sender.url }} | jq -r .name)
@@ -24,4 +31,4 @@ jobs:
           --webhook-url="${{ secrets.PUBLISH_WEBHOOK_URL }}" \
           --username "$name" \
           --avatar "${{ github.event.sender.avatar_url }}" \
-          --text "$(jq -Rs . <.github/templates/release.md | cut -c 2- | rev | cut -c 2- | rev)" 
+          --text "$(jq -Rs . <output.txt | cut -c 2- | rev | cut -c 2- | rev)" 
