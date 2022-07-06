@@ -1,0 +1,23 @@
+name: Action test
+on: 
+  workflow_dispatch:
+  push:
+    branches: [master,main]
+    paths:
+      - '.github/workflows/action-test.yml'
+
+jobs:
+  release:    
+    name: Test action
+    runs-on: ubuntu-latest
+    steps:
+      # Build mod
+    - uses: actions/checkout@v3
+
+      # Test action
+    - name: Test Action
+      uses: Graicc/MarkdownDiscordConverter@master
+      with:
+        file: .github/templates/release.md
+        output: file.txt
+    - run: cat file.txt
