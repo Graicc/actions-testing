@@ -1,10 +1,10 @@
 name: Test Release
 on:
   release:
-    types: [edited]
+    types: [published]
 
 jobs:
-  publish-release:
+  test-release:
     name: Test Release
     runs-on: ubuntu-latest
     steps:
