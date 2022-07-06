@@ -13,5 +13,8 @@ jobs:
           GITHUB_CONTEXT: ${{ toJson(github) }}
         run: echo "$GITHUB_CONTEXT"
 
-      - run: echo ${{ github.event.release.body }} > message.md
+      - run: printenv BODY > message.md
+        env:
+          BODY: ${{ github.event.release.body }}
+      - run: sed -i 's/\r$//g' message.md
       - run: cat message.md
