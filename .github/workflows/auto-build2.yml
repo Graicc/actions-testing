@@ -24,4 +24,4 @@ jobs:
     - name: Publish mod
       uses: Graicc/actions-testing/.github/actions/publish@main
       with:
-        webhook-url: ${{ env.WEBHOOK_URL }}
+        webhook-url: ${{ secrets.WEBHOOK_URL }}
