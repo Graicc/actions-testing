@@ -12,16 +12,6 @@ jobs:
     name: Publish Test
     runs-on: windows-latest
     steps:
-    - name: Dump GitHub context
-      id: github_context_step
-      env:
-        JSON: ${{ toJSON(github) }}
-        COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
-      shell: bash
-      run: |
-        printenv JSON | jq .event.head_commit.message | cut -c 2- | rev | cut -c 2- | rev
-        printenv COMMIT_MESSAGE | jq -Rs . | cut -c 2- | rev | cut -c 2- | rev
-
     - name: Upload to Discord
       env:
         COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
@@ -29,6 +19,8 @@ jobs:
       shell: bash
       run: |
         curl https://raw.githubusercontent.com/ChaoticWeg/discord.sh/master/discord.sh -o discord.sh
+        printenv JSON | jq .event.head_commit.message | cut -c 2- | rev | cut -c 2- | rev
+        printenv COMMIT_MESSAGE | jq -Rs . | cut -c 2- | rev | cut -c 2- | rev
         ./discord.sh \
         --webhook-url="${{ secrets.WEBHOOK_URL }}" \
         --text "**${{github.actor}}** on **${{github.repository}}**(${{github.ref}}): *$(printenv JSON | jq .event.head_commit.message | cut -c 2- | rev | cut -c 2- | rev)*\n<https://github.com/${{github.repository}}/commit/${{github.sha}}>" \
