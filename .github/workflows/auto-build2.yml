@@ -20,8 +20,6 @@ jobs:
 
     - name: Build mod
       uses: ./.github/actions/build
-      with:
-        working-dir: ${{steps.wd.outputs.dir}}
 
     - name: Publish mod
       uses: Graicc/actions-testing/.github/actions/publish@main

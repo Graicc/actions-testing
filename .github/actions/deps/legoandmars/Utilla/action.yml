@@ -2,7 +2,7 @@ name: Utilla
 description: Downloads Utilla (legoandmars/Utilla) to Libs dir
 
 inputs:
-  output-dir
+  output-dir:
     description: "Directory to output to (i.e. working-dir/Libs)"
     required: true
 
