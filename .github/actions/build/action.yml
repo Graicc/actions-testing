@@ -49,4 +49,3 @@ runs:
     run: | # TODO: this could break
       $dir = (ls . -filter *.csproj -recurse).BaseName
       mv $dir\$dir-v.zip Build.zip
-      Expand-Archive Build.zip Build
