@@ -18,9 +18,7 @@ jobs:
       shell: bash
       run: |
         curl https://raw.githubusercontent.com/ChaoticWeg/discord.sh/master/discord.sh -o discord.sh
-        echo $COMMIT_MESSAGE
-        echo "$(echo "$COMMIT_MESSAGE" | head -n 1)"
         ./discord.sh \
         --webhook-url="${{ secrets.WEBHOOK_URL }}" \
-        --text "**${{github.actor}}** on **${{github.repository}}**(${{github.ref}}): *$(echo $COMMIT_MESSAGE | head -n 1)*\n<https://github.com/${{github.repository}}/commit/${{github.sha}}>" \
+        --text "**${{github.actor}}** on **${{github.repository}}**(${{github.ref}}): *$(echo $COMMIT_MESSAGE| jq -Rs . | cut -c 2- | rev | cut -c 2- | rev)*\n<https://github.com/${{github.repository}}/commit/${{github.sha}}>" \
         
