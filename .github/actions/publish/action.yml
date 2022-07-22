@@ -16,7 +16,9 @@ runs:
   steps:
     - name: Prepare build for upload
       shell: pwsh
-      run: Expand-Archive ${{ inputs.file-path }} Build
+      run: |
+        if (Test-Path Build ) { Remove-Item Build -Recurse }
+        Expand-Archive ${{ inputs.file-path }} Build
 
     - name: Upload to GitHub
       if: "${{ env.WEBHOOK_URL == '' }}" # If there is no webhook, upload to the action
