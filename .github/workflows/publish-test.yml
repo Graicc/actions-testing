@@ -19,9 +19,11 @@ jobs:
       shell: bash
       run: |
         curl https://raw.githubusercontent.com/ChaoticWeg/discord.sh/master/discord.sh -o discord.sh
-        printenv JSON | jq .event.head_commit.message | cut -c 2- | rev | cut -c 2- | rev
-        printenv COMMIT_MESSAGE | jq -Rs . | cut -c 2- | rev | cut -c 2- | rev
+
+        printenv JSON | jq .event.head_commit.message | tr -d \"
+        printenv COMMIT_MESSAGE | jq -Rs . | tr -d \"
+
         ./discord.sh \
         --webhook-url="${{ secrets.WEBHOOK_URL }}" \
-        --text "**${{github.actor}}** on **${{github.repository}}**(${{github.ref}}): *$(printenv JSON | jq .event.head_commit.message | cut -c 2- | rev | cut -c 2- | rev)*\n<https://github.com/${{github.repository}}/commit/${{github.sha}}>" \
+        --text "**${{github.actor}}** on **${{github.repository}}**(${{github.ref}}): *$(printenv JSON | jq .event.head_commit.message | tr -d \")*\n<https://github.com/${{github.repository}}/commit/${{github.sha}}>" \
         
