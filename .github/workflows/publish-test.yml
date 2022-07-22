@@ -14,16 +14,11 @@ jobs:
     steps:
     - name: Upload to Discord
       env:
-        COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
         JSON: ${{ toJSON(github) }}
       shell: bash
       run: |
         curl https://raw.githubusercontent.com/ChaoticWeg/discord.sh/master/discord.sh -o discord.sh
-
-        printenv JSON | jq .event.head_commit.message | tr -d \"
-        printenv COMMIT_MESSAGE | jq -Rs . | tr -d \"
-
         ./discord.sh \
         --webhook-url="${{ secrets.WEBHOOK_URL }}" \
-        --text "**${{github.actor}}** on **${{github.repository}}**(${{github.ref}}): *$(printenv COMMIT_MESSAGE | jq -Rs . | sed -e 's/\\r.*//' -e s/\"//)*\n<https://github.com/${{github.repository}}/commit/${{github.sha}}>" \
+        --text "**${{github.actor}}** on **${{github.repository}}**(${{github.ref}}): *$(printenv JSON | jq .event.head_commit.message | sed -e 's/\\r.*//' -e s/\"//)*\n<https://github.com/${{github.repository}}/commit/${{github.sha}}>" \
         
