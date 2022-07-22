@@ -21,15 +21,16 @@ runs:
         Expand-Archive ${{ inputs.file-path }} Build
 
     - name: Upload to GitHub
-      if: "${{ env.WEBHOOK_URL == '' }}" # If there is no webhook, upload to the action
+      if: "${{ inputs.webhook-url == '' }}" # If there is no webhook, upload to the action
       env:
         WEBHOOK_URL: ${{ inputs.webhook-url }}
       uses: actions/upload-artifact@v1
       with:
         name: Build
         path: Build
+
     - name: Upload to Discord
-      if: "${{ env.WEBHOOK_URL != '' }}" # If a webhook is supplied, use it instead
+      if: "${{ inputs.webhook-url != '' }}" # If a webhook is supplied, use it instead
       env:
         commit-message: ${{ github.event.head_commit.message }}
       shell: bash
