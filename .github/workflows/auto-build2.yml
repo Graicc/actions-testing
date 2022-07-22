@@ -24,6 +24,6 @@ jobs:
         working-dir: ${{steps.wd.outputs.dir}}
 
     - name: Publish mod
-      uses: Graicc/actions-testing/.github/actions/publish
+      uses: Graicc/actions-testing/.github/actions/publish@main
       with:
         webhook-url: ${{ env.WEBHOOK_URL }}

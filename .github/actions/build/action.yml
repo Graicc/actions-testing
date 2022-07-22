@@ -7,7 +7,7 @@ runs:
   # Get working dir
   - name: Get working directory
     id: wd
-    uses: Graicc/actions-testing/.github/actions/working-dir
+    uses: Graicc/actions-testing/.github/actions/working-dir@main
 
     # Download required libraries
   - name: Download Stripped Libs
@@ -32,7 +32,7 @@ runs:
       cp Temp\BepInEx\core\*.dll ${{ steps.wd.outputs.dir }}\Libs
       rm Temp -Recurse
 
-  - uses: Graicc/actions-testing/.github/actions/deps/legoandmars/Utilla
+  - uses: Graicc/actions-testing/.github/actions/deps/legoandmars/Utilla@main
     with:
       output-dir: ${{ steps.wd.outputs.dir }}\Libs
 
