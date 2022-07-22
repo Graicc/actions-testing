@@ -4,11 +4,10 @@ description: Builds mod
 runs:
   using: "composite"
   steps:
-    # Setup
+  # Get working dir
   - name: Get working directory
     id: wd
-    shell: pwsh
-    run: echo "::set-output name=dir::$((ls . -filter *.csproj -recurse).DirectoryName)"
+    uses: Graicc/actions-testing/.github/actions/working-dir
 
     # Download required libraries
   - name: Download Stripped Libs
@@ -30,20 +29,12 @@ runs:
     shell: pwsh
     run: |
       Expand-Archive BepInEx_x64*.zip Temp
-      cp Temp\BepInEx\core\*.dll ${{steps.wd.outputs.dir}}\Libs
+      cp Temp\BepInEx\core\*.dll ${{ steps.wd.outputs.dir }}\Libs
       rm Temp -Recurse
-  - name: Download Utilla
-    uses: robinraju/release-downloader@v1.2
+
+  - uses: Graicc/actions-testing/.github/actions/deps/legoandmars/Utilla
     with:
-      repository: "legoandmars/Utilla"
-      latest: true
-      fileName: "*"
-  - name: Extract Utilla
-    shell: pwsh
-    run: |
-      Expand-Archive Utilla*.zip Temp
-      cp Temp\BepInEx\plugins\Utilla ${{steps.wd.outputs.dir}}\Libs -Recurse
-      rm Temp -Recurse
+      output-dir: ${{ steps.wd.outputs.dir }}\Libs
 
     # Build the mod
   - name: Setup dotnet
@@ -52,10 +43,10 @@ runs:
     env: 
       CI: TRUE
     shell: pwsh
-    run: ${{steps.wd.outputs.dir}}\MakeRelease.ps1
+    run: ${{ steps.wd.outputs.dir }}\MakeRelease.ps1
   - name: Prepare build for upload
     shell: pwsh
-    run: |
+    run: | # TODO: this could break
       $dir = (ls . -filter *.csproj -recurse).BaseName
       mv $dir\$dir-v.zip Build.zip
       Expand-Archive Build.zip Build

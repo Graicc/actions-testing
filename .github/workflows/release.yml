@@ -12,7 +12,8 @@ jobs:
     steps:
       # Build mod
     - uses: actions/checkout@v3
-    - name: Build Mod
+
+    - name: Build mod
       uses: ./.github/actions/build
 
       # Make release

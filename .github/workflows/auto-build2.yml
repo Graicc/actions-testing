@@ -1,0 +1,29 @@
+name: Auto Build
+on: 
+  workflow_dispatch:
+  push:
+    branches: [master,main]
+    paths-ignore:
+      - '**.yml'
+      - '!.github/workflows/auto-build2.yml'
+      - '**.md'
+      - '.gitignore'
+  pull_request:
+    branches: [master,main]
+
+jobs:
+  auto-build:
+    name: Auto Build
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Build mod
+      uses: ./.github/actions/build
+      with:
+        working-dir: ${{steps.wd.outputs.dir}}
+
+    - name: Publish mod
+      uses: Graicc/actions-testing/.github/actions/publish
+      with:
+        webhook-url: ${{ env.WEBHOOK_URL }}
