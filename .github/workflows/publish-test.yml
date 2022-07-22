@@ -1,6 +1,10 @@
 name: Publish Test
 on: 
   workflow_dispatch:
+  push:
+    branches: [master,main]
+    paths:
+      - '!.github/workflows/publish-test.yml'
 
 jobs:
   publish:
