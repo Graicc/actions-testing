@@ -32,12 +32,12 @@ runs:
     - name: Upload to Discord
       if: "${{ inputs.webhook-url != '' }}" # If a webhook is supplied, use it instead
       env:
-        COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
+        JSON: ${{ toJSON(github) }}
       shell: bash
       run: |
         curl https://raw.githubusercontent.com/ChaoticWeg/discord.sh/master/discord.sh -o discord.sh
         ./discord.sh \
         --webhook-url="${{ inputs.webhook-url }}" \
-        --text "**${{github.actor}}** on **${{github.repository}}**(${{github.ref}}): *$(echo $COMMIT_MESSAGE | head -n 1)*\n<https://github.com/${{github.repository}}/commit/${{github.sha}}>" \
+        --text "**${{github.actor}}** on **${{github.repository}}**(${{github.ref}}): *$(printenv JSON | jq .event.head_commit.message | sed -e 's/\\r.*//' -e s/\"//)*\n<https://github.com/${{github.repository}}/commit/${{github.sha}}>" \
         --file ${{ inputs.file-path }}
         
