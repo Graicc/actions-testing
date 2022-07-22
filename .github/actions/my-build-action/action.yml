@@ -1,0 +1,22 @@
+name: Build
+description: Builds mod
+
+runs:
+  using: "composite"
+  steps:
+  # Get working dir
+  - name: Get working directory
+    id: wd
+    uses: Graicc/actions-testing/.github/actions/working-dir@main
+
+  - uses: Graicc/actions-testing/.github/actions/setup@main
+    with:
+      working-dir: ${{ steps.wd.outputs.dir }}
+
+  - uses: Graicc/actions-testing/.github/actions/deps/legoandmars/Utilla@main
+    with:
+      output-dir: ${{ steps.wd.outputs.dir }}\Libs
+
+  - uses: Graicc/actions-testing/.github/actions/temp@main
+    with:
+      working-dir: ${{ steps.wd.outputs.dir }}

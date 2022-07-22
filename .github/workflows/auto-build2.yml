@@ -19,9 +19,9 @@ jobs:
     - uses: actions/checkout@v3
 
     - name: Build mod
-      uses: ./.github/actions/build
+      uses: ./.github/actions/my-build-action
 
     - name: Publish mod
-      uses: Graicc/actions-testing/.github/actions/publish@main
+      uses: Graicc/actions-testing/.github/actions/upload@main
       with:
         webhook-url: ${{ secrets.WEBHOOK_URL }}

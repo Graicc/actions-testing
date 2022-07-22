@@ -13,4 +13,4 @@ runs:
   - name: Get working directory
     id: wd
     shell: pwsh
-    run: echo "::set-output name=dir::$((ls . -filter *.csproj -recurse).DirectoryName)"
+    run: echo "::set-output name=dir::$(((ls . -filter *.csproj -recurse | sort).DirectoryName) | select -last 1)"
