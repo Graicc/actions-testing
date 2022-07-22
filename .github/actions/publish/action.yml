@@ -31,7 +31,6 @@ runs:
       env:
         commit-message: ${{ github.event.head_commit.message }}
       shell: bash
-      env:
       run: |
         curl https://raw.githubusercontent.com/ChaoticWeg/discord.sh/master/discord.sh -o discord.sh
         ./discord.sh \
