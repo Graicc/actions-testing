@@ -17,6 +17,6 @@ runs:
     with:
       output-dir: ${{ steps.wd.outputs.dir }}\Libs
 
-  - uses: Graicc/actions-testing/.github/actions/temp@main
+  - uses: Graicc/actions-testing/.github/actions/build@main
     with:
       working-dir: ${{ steps.wd.outputs.dir }}

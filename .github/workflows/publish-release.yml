@@ -8,27 +8,7 @@ jobs:
     name: Publish Release
     runs-on: ubuntu-latest
     steps:
-      - name: Get Release Text
-        env:
-          BODY: ${{ github.event.release.body }}
-        run: |
-          printenv BODY > message.md
-          sed -i 's/\r$//g' message.md
-
-      - name: Format release text
-        uses: Graicc/MarkdownDiscordConverter@master
-        with:
-          file: message.md
-          output: output.txt
-
-      - name: Send Webhook
-        run: |
-          name=$(curl ${{ github.event.sender.url }} | jq -r .name)
-
-          curl https://raw.githubusercontent.com/ChaoticWeg/discord.sh/master/discord.sh -o discord.sh
-          chmod +x ./discord.sh
-          ./discord.sh \
-          --webhook-url="${{ secrets.PUBLISH_WEBHOOK_URL }}" \
-          --username "$name" \
-          --avatar "${{ github.event.sender.avatar_url }}" \
-          --text "$(jq -Rs . <output.txt | cut -c 2- | rev | cut -c 2- | rev)" 
+    - name: Publish mod
+      uses: Graicc/actions-testing/.github/actions/publish@main
+      with:
+        webhook-url: ${{ secrets.PUBLISH_WEBHOOK_URL }}

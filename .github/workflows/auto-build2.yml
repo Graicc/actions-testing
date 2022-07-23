@@ -21,7 +21,7 @@ jobs:
     - name: Build mod
       uses: ./.github/actions/my-build-action
 
-    - name: Publish mod
+    - name: Upload mod
       uses: Graicc/actions-testing/.github/actions/upload@main
       with:
         webhook-url: ${{ secrets.WEBHOOK_URL }}

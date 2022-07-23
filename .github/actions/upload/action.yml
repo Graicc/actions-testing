@@ -1,5 +1,5 @@
-name: Publish
-description: Publishes mod to Discord or Github
+name: Upload
+description: Uploads mod to Discord or Github
 
 inputs:
   webhook-url:
