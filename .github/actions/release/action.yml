@@ -1,0 +1,38 @@
+
+name: Publish
+description: Publish mod to Discord, runs on release publish
+
+inputs:
+  template:
+    description: "Path to release template file"
+    required: true
+  human-name: 
+    description: "Human readable name of the repository"
+    required: false
+    default: ""
+
+runs:
+  using: "composite"
+  steps:
+  - name: Format Release Template
+    shell: bash
+    env:
+      HUMAN_NAME: ${{ inputs.human-name }}
+    run: |
+      : "${HUMAN_NAME:=${{ github.event.repository.name }}}"
+      sed -i 's@{REPO}@'"${{ github.server_url }}/${{ github.repository }}"'@g' .github/templates/release.md
+      sed -i 's@{NAME}@'"${{ github.event.repository.name }}"'@g' .github/templates/release.md
+      sed -i 's@{HUMAN_NAME}@'"${{ inputs.human-name }}"'@g' .github/templates/release.md
+      sed -i 's@{VERSION}@'"${{ inputs.tag }}"'@g' .github/templates/release.md
+
+    # Make release
+  - name: Create Release
+    id: create_release
+    uses: actions/create-release@v1
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+    with:
+      tag_name: ${{ inputs.tag }}
+      release_name: ${{ github.event.repository.name }} ${{ inputs.tag }}
+      body_path: .github/templates/release.md
+      draft: true
