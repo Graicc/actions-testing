@@ -1,6 +1,6 @@
 
-name: Publish
-description: Publish mod to Discord, runs on release publish
+name: Release
+description: Creates a release post with given properties
 
 inputs:
   token:
@@ -31,6 +31,8 @@ runs:
       sed -i 's@{NAME}@'"${{ github.event.repository.name }}"'@g' .github/templates/release.md
       sed -i 's@{HUMAN_NAME}@'"${{ inputs.human-name }}"'@g' .github/templates/release.md
       sed -i 's@{VERSION}@'"${{ inputs.tag }}"'@g' .github/templates/release.md
+      desc=$(curl ${{ github.event.repository.url }} | jq -r .description)
+      sed -i 's@{DESCRIPTION}@'"$desc"'@g' .github/templates/release.md
 
     # Make release
   - name: Create Release
