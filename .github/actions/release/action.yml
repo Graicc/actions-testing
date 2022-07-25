@@ -49,7 +49,7 @@ runs:
     if: inputs.file-path != ""
     uses: actions/upload-release-asset@v1
     env:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      GITHUB_TOKEN: ${{ inputs.token }}
     with:
       upload_url: ${{ steps.create_release.outputs.upload_url }}
       asset_path: ./Build.zip
