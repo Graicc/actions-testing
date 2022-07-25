@@ -15,7 +15,7 @@ inputs:
   human-name: 
     description: "Human readable name of the repository"
     required: false
-    default: ""
+    default: ${{ github.event.repository.name }}
 
 runs:
   using: "composite"
@@ -39,6 +39,6 @@ runs:
       GITHUB_TOKEN: ${{ inputs.token }}
     with:
       tag_name: ${{ inputs.tag }}
-      release_name: ${{ github.event.repository.name }} ${{ inputs.tag }}
+      release_name: ${{ inputs.human-name }} ${{ inputs.tag }}
       body_path: .github/templates/release.md
       draft: true
