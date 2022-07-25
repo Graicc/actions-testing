@@ -1,5 +1,4 @@
-# {NAME} {VERSION}
-
+<!-- DISC-ONLY # {NAME} {VERSION} -->
 Replaces the in game computer with a custom one for other mods to use.
 
 Changes:
