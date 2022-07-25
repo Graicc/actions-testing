@@ -1,7 +1,9 @@
-# Example Mod
+# {NAME} {VERSION}
 
-This mod is an example
-
-If you'd just like to quickly install with an easy to use .exe, consider using the [Monke Mod Manager](https://github.com/DeadlyKitten/MonkeModManager/releases/latest)
+Replaces the in game computer with a custom one for other mods to use.
 
 Changes:
+- 
+
+**Install using [Monke Mod Manager](https://github.com/DeadlyKitten/MonkeModManager/releases/latest)**
+<!-- DISC-ONLY *Or download here: <{REPO}/releases/latest>* -->

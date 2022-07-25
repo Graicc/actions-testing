@@ -13,6 +13,13 @@ jobs:
       # Build mod
     - uses: actions/checkout@v3
 
+    - name: Format Release Template
+      shell: bash
+      run: |
+        sed -i 's@{REPO}@'"${{ github.server_url }}/${{ github.repository }}"'@g' .github/templates/release.md
+        sed -i 's@{NAME}@'"${{ github.event.repository.name }}"'@g' .github/templates/release.md
+        sed -i 's@{VERSION}@'"${{ inputs.tag }}"'@g' .github/templates/release.md
+
       # Make release
     - name: Create Release
       id: create_release
