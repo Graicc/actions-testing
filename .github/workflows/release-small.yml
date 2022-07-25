@@ -15,4 +15,5 @@ jobs:
 
     - uses: ./.github/actions/release
       with:
+        token: ${{ secrets.GITHUB_TOKEN }}
         template: .github/templates/release.md
