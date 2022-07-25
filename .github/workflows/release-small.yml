@@ -18,3 +18,4 @@ jobs:
         tag: ${{ inputs.tag }}
         token: ${{ secrets.GITHUB_TOKEN }}
         template: .github/templates/release.md
+        human-name: Action Test

@@ -22,10 +22,7 @@ runs:
   steps:
   - name: Format Release Template
     shell: bash
-    env:
-      HUMAN_NAME: ${{ inputs.human-name }}
     run: |
-      : "${HUMAN_NAME:=${{ github.event.repository.name }}}"
       sed -i 's@{REPO}@'"${{ github.server_url }}/${{ github.repository }}"'@g' .github/templates/release.md
       sed -i 's@{NAME}@'"${{ github.event.repository.name }}"'@g' .github/templates/release.md
       sed -i 's@{HUMAN_NAME}@'"${{ inputs.human-name }}"'@g' .github/templates/release.md
