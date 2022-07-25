@@ -6,6 +6,9 @@ inputs:
   token:
     description: "Github token"
     required: true
+  tag:
+    description: "Tag to be created"
+    required: true
   template:
     description: "Path to release template file"
     required: true
@@ -33,7 +36,7 @@ runs:
     id: create_release
     uses: actions/create-release@v1
     env:
-      GITHUB_TOKEN: ${{ inputs.token }} # This token is provided by Actions, you do not need to create your own token
+      GITHUB_TOKEN: ${{ inputs.token }}
     with:
       tag_name: ${{ inputs.tag }}
       release_name: ${{ github.event.repository.name }} ${{ inputs.tag }}
